@@ -6,7 +6,7 @@ Mocks the WebSerial API to test Arduino Uploaders Playwright
 
 Install the package with `yarn add -D @leaphy-robotics/playwright-arduino` or using NPM `npm i --save-dev @leaphy-robotics/playwright-arduino`.
 
-``js
+```js
 import { test, expect } from '@playwright/test';
 import setup from '@leaphy-robotics/playwright-arduino';
 
@@ -16,7 +16,7 @@ test('test', async ({ page }) => {
     // Your test code
     ...
 });
-``
+```
 
 ## Development
 
