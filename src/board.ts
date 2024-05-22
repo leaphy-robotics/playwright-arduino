@@ -6,7 +6,7 @@ class Board {
     public port = '/tmp/simavr-uart0'
 
     constructor() {
-        this.process = spawn('./simduino.elf', {
+        this.process = spawn('./simduino', {
             cwd: `${import.meta.dirname}/../build`
         })
     }

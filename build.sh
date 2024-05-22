@@ -1,14 +1,10 @@
 set -e
-rm -rf build_assets build
+rm -rf build
 
 BUILD_PATH=$(realpath build)
-mkdir build_assets build && cd build_assets
 
-git clone https://github.com/buserror/simavr
-cd simavr
+cd simduino
+gcc -I /usr/include/simavr -I /usr/include/simavr/parts simduino.c -lsimavr -lsimavrparts -o simduino
 
-make -j8
-cd examples/board_simduino
-
-EXECUTABLE=$(find . | grep simduino.elf)
-cp ATmegaBOOT_168_atmega328.ihex "${EXECUTABLE}" "${BUILD_PATH}"
+mkdir "${BUILD_PATH}"
+cp simduino ATmegaBOOT_168_atmega328.ihex "${BUILD_PATH}"
