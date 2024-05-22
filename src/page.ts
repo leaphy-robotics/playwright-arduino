@@ -94,6 +94,8 @@ class SerialPort {
         const err = await globalThis.setSignals(this.id, signals)
         if (err) throw err
     }
+
+    addEventListener() {}
 }
 
 // @ts-ignore
