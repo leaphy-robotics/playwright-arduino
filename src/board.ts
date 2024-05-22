@@ -7,7 +7,8 @@ class Board {
 
     constructor() {
         this.process = spawn('./simduino', {
-            cwd: `${import.meta.dirname}/../build`
+            cwd: `${import.meta.dirname}/../build`,
+            stdio: 'inherit'
         })
     }
 
