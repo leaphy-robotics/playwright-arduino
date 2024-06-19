@@ -24,8 +24,8 @@ declare module globalThis {
         reader: ReadableStreamDefaultReader<CallbackEvent>
 }
 
-const ports: Record<string, SerialPort|null> = {}
-export default async function setup(page: Page) {
+export default async function setup(page: Page): Promise<Board> {
+    const ports: Record<string, SerialPort|null> = {}
     const arduino = new Board()
 
     const methods: Record<string, (...args: any[]) => Promise<any>> = {
@@ -166,4 +166,5 @@ export default async function setup(page: Page) {
         }
     })
 
+    return arduino;
 }
