@@ -53,6 +53,8 @@ if (!globalThis.getPorts) {
 class SerialPort {
     readable?: ReadableStream<Uint8Array> = undefined
     writable?: WritableStream<Uint8Array> = undefined
+    vendorId = 0x0403
+    productId = 0x6001
 
     constructor(private id: string) { }
 
