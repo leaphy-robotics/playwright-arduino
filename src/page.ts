@@ -51,8 +51,10 @@ if (!globalThis.getPorts) {
 }
 
 class SerialPort {
-    readable?: ReadableStream<Uint8Array> = undefined
-    writable?: WritableStream<Uint8Array> = undefined
+    private active = false
+    private activeReadable?: ReadableStream<Uint8Array> = undefined
+    private activeWritable?: WritableStream<Uint8Array> = undefined
+
     vendorId = 0x0403
     productId = 0x6001
 
@@ -65,7 +67,14 @@ class SerialPort {
         if (err instanceof Error) throw err
 
         await globalThis.readPort(port)
-        this.readable = new ReadableStream({
+        this.active = true
+    }
+
+    get readable() {
+        if (!this.active) return
+        if (this.activeReadable) return this.activeReadable
+
+        this.activeReadable = new ReadableStream({
             type: 'bytes',
             async pull(controller) {
                 globalThis.readCallback = (data: number[]) => {
@@ -73,22 +82,36 @@ class SerialPort {
                         controller.enqueue(new Uint8Array(data))
                     } catch { }
                 }
+            },
+            cancel: () => {
+                this.activeReadable = undefined
             }
         }, {
             highWaterMark: 512,
         })
-        this.writable = new WritableStream({
-            async write(chunk) {
-                const err = await globalThis.writePort(port, Array.from(chunk.values()))
+
+        return this.activeReadable
+    }
+
+    get writable() {
+        if (!this.active) return
+        if (this.activeWritable) return this.activeWritable
+
+        this.activeWritable = new WritableStream({
+            write: async (chunk) => {
+                const err = await globalThis.writePort(this.id, Array.from(chunk.values()))
                 if (err instanceof Error) throw err
+            },
+            close: () => {
+                this.activeWritable = undefined
             }
         })
+        return this.activeWritable
     }
 
     async close() {
         const err = await globalThis.closePort(this.id)
-        this.readable = undefined
-        this.writable = undefined
+        this.active = false
         if (err) throw err
     }
 
