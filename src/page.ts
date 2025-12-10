@@ -6,12 +6,12 @@ type CallbackEvent = {
 
 declare module globalThis {
     let requestSerial: (options: SerialPortRequestOptions) => Promise<string>,
-        openSerial: (id: string, options: SerialOptions) => Promise<void|Error>,
-        readPort: (id: string) => Promise<number[]|Error>,
+        openSerial: (id: string, options: SerialOptions) => Promise<void | Error>,
+        readPort: (id: string) => Promise<number[] | Error>,
         readCallback: (data: number[]) => void,
-        writePort: (id: string, data: number[]) => Promise<void|Error>,
-        closePort: (id: string) => Promise<void|Error>,
-        setSignals: (id: string, signals: SerialOutputSignals) => Promise<void|Error>,
+        writePort: (id: string, data: number[]) => Promise<void | Error>,
+        closePort: (id: string) => Promise<void | Error>,
+        setSignals: (id: string, signals: SerialOutputSignals) => Promise<void | Error>,
         getPorts: () => Promise<string[]>,
         onDone: Record<string, (value: any) => void>,
         reader: ReadableStreamDefaultReader<CallbackEvent>
@@ -120,7 +120,15 @@ class SerialPort {
         if (err) throw err
     }
 
-    addEventListener() {}
+    addEventListener() { }
+
+    getInfo() {
+        return {
+            usbVendorId: this.vendorId,
+            usbProductId: this.productId,
+            bluetoothServiceClassId: undefined
+        };
+    }
 }
 
 // @ts-ignore
