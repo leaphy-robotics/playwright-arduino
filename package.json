@@ -15,7 +15,7 @@
     "build:simavr": "./build.sh"
   },
   "devDependencies": {
-    "@types/node": "^20.12.7",
+    "@types/node": "^24",
     "@types/serialport": "^8.0.5",
     "@types/w3c-web-serial": "^1.0.6",
     "playwright": "^1.55.1",
