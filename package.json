@@ -9,6 +9,9 @@
     "dist",
     "build"
   ],
+  "repository": {
+    "url": "https://github.com/leaphy-robotics/playwright-arduino"
+  },
   "scripts": {
     "build": "tsup src",
     "watch": "tsup --watch src",
