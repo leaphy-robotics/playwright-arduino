@@ -5,13 +5,17 @@ on:
     tags:
       - v*
 
+permissions:
+  id-token: write  # OIDC with npmjs
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v5
 
       - name: Install dependencies
         run: sudo apt update && sudo apt install gcc-avr avr-libc freeglut3-dev arduino-core-avr libsimavr-dev libsimavrparts1
@@ -32,6 +36,4 @@ jobs:
         run: yarn build
 
       - name: Publish to NPM
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
         run: npm publish --access public
